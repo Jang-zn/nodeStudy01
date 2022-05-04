@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
 
+
+const nunjucks = require('nunjucks');
 // --------------------------------------------서버 설정
 
 const app = express();
@@ -14,7 +16,12 @@ app.set('port', process.env.PORT || 3000);
 
 //템플릿엔진 설정
 app.set('views',path.join(__dirname,'views'));
-app.set('view engine','pug');
+app.set('view engine','html');
+nunjucks.configure('views',{
+  express : app,
+  watch:true
+});
+
 
 
 const indexRouter = require('./routes');
