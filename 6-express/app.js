@@ -1,14 +1,20 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const dotenv = require('dotenv');
 const path = require('path');
 
-dotenv.config();
+// --------------------------------------------서버 설정
+
 const app = express();
 app.set('port', process.env.PORT || 3000);
 
+
+
+//---------------------------------------------미들웨어 사용
 //요청 / 응답정보를 기록하는 미들웨어
 app.use(morgan('dev'));
 
@@ -25,10 +31,10 @@ app.use(express.urlencoded({ extended: true })); //true면 qs, false면 querystr
 //form에서 이미지나 파일을 보내는경우 multer 사용해야된다..
 
 
-
 app.use(session({
   resave: false,
   saveUninitialized: false,
+  //비밀 키를 환경변수에 저장해서 관리
   secret: process.env.COOKIE_SECRET,
   //세션쿠키에 대한 설정
   cookie: {
@@ -42,24 +48,37 @@ app.use(session({
 const multer = require('multer');
 const fs = require('fs');
 
+//업로드 폴더 확인후 없으면 생성
 try {
   fs.readdirSync('uploads');
 } catch (error) {
   console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
   fs.mkdirSync('uploads');
 }
+
+//multer 옵션
+// storage : 업로드한 파일의 저장위치, multer S3 같은 aws용 패키지도 있다.
+// limits : 최대 fileSize, file갯수 등..
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
       done(null, 'uploads/');
     },
     filename(req, file, done) {
+      //파일 확장자 추출
       const ext = path.extname(file.originalname);
+      //파일이름과 이름 + 확장자 로 저장... Date.now()는 같은 이름의 파일 중복을 막기 위한 방식
       done(null, path.basename(file.originalname, ext) + Date.now() + ext);
     },
   }),
+  //filesize 5mb 제한
   limits: { fileSize: 5 * 1024 * 1024 },
 });
+
+//이렇게 만든 업로드객체를 라우터에 장착
+
+
+//------------------------------------------------------------라우터
 app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, 'multipart.html'));
 });
@@ -68,12 +87,18 @@ app.post('/upload', upload.single('image'), (req, res) => {
   res.send('ok');
 });
 
+
+
+
+//---------------------------------------------------------404 처리
 app.get('/', (req, res, next) => {
   console.log('GET / 요청에서만 실행됩니다.');
   next();
 }, (req, res) => {
   throw new Error('에러는 에러 처리 미들웨어로 갑니다.')
 });
+
+//---------------------------------------------------------에러처리 미들웨어
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err.message);
