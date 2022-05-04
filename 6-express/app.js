@@ -12,7 +12,13 @@ const path = require('path');
 const app = express();
 app.set('port', process.env.PORT || 3000);
 
+//템플릿엔진 설정
+app.set('views',path.join(__dirname,'views'));
+app.set('view engine','pug');
 
+
+const indexRouter = require('./routes');
+const userRouter = require('./routes/user');
 
 //---------------------------------------------미들웨어 사용
 //요청 / 응답정보를 기록하는 미들웨어
@@ -88,15 +94,15 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 
-
-
-//---------------------------------------------------------404 처리
-app.get('/', (req, res, next) => {
-  console.log('GET / 요청에서만 실행됩니다.');
-  next();
-}, (req, res) => {
+app.get('/', indexRouter, (req, res) => {
   throw new Error('에러는 에러 처리 미들웨어로 갑니다.')
 });
+
+app.get('/', userRouter);
+
+//---------------------------------------------------------404 처리
+
+
 
 //---------------------------------------------------------에러처리 미들웨어
 app.use((err, req, res, next) => {
