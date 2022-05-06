@@ -7,8 +7,6 @@ const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 
 dotenv.config();
-const pageRouter = require('./routes/page');
-const {sequelize} = require('./models');
 
 const app = express();
 app.set('port', process.env.PORT||3001);
@@ -17,6 +15,10 @@ nunjucks.configure('views',{
     express:app,
     watch:true,
 });
+
+const pageRouter = require('./routes/page');
+const {sequelize} = require('./models');
+
 
 //force, alter 옵션으로 모델 수정하고 db 연결시 테이블 수정되도록 할순 있음
 sequelize.sync({
@@ -60,6 +62,6 @@ app.use((err, req, res, next)=>{
     res.status(err.status||500).render('error');
 });
 
-app.listen(app.get('port'),()=>{
-    console.log(app.get('port'), '번 포트에서 대기중');
-});
+  app.listen(app.get('port'), () => {
+    console.log(app.get('port'), '번 포트에서 대기 중');
+  });

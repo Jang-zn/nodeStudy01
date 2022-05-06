@@ -33,8 +33,8 @@ module.exports = class User extends Sequelize.Model{
             paranoid:false, // true면 deletedAt도 추가됨 -- soft delete
             modelName:'User',
             tableName:'users', //안정해주면 model명의 복수형으로 들어감
-            charset:'utf8',
-            collate:'utf8_general_ci'
+            charset:'utf8mb4',
+            collate:'utf8mb4_general_ci'
         });
     }
 

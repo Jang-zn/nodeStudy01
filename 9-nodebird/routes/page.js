@@ -31,16 +31,6 @@ router.use((req, res, next) => {
     next();
   });
 
-router.get('/', (req, res, next)=>{
-    console.log("here!!!!!!");
-    const twits = [];
-    res.render('main',{
-        title:'NodeBird',
-        twits,
-    });
-    next();
-});
-
 router.get('/profile', (req,res)=>{
     res.render('profile', {title:'내 정보 - NodeBird'});
 });
@@ -48,6 +38,15 @@ router.get('/profile', (req,res)=>{
 
 router.get('/join',(req, res)=>{
     res.render('join',{title:'회원가입 - NodeBird'});
+});
+
+router.get('/', (req, res, next)=>{
+    console.log("here!!!!!!");
+    const twits = [];
+    res.render('main',{
+        title:'NodeBird',
+        twits,
+    });
 });
 
 

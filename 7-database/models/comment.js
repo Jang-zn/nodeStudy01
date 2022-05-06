@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports=class Comment extends Sequelize{
+module.exports=class Comment extends Sequelize.Model{
     static init(sequelize){
         return super.init({
             comment:{
@@ -18,7 +18,7 @@ module.exports=class Comment extends Sequelize{
             paranoid:false,
             modelName:'Comment',
             tableName:'comments',
-            charset:'utf8',
+            charset:'utf8mb4',
             collate:'utf8mb4_general_ci'
         });
     }
