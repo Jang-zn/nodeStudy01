@@ -8,13 +8,23 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const pageRouter = require('./routes/page');
+const {sequelize} = require('./models');
 
 const app = express();
-app.set('port', process.env.PORT||8001);
+app.set('port', process.env.PORT||3001);
 app.set('view engine', 'html');
 nunjucks.configure('views',{
     express:app,
     watch:true,
+});
+
+//force, alter 옵션으로 모델 수정하고 db 연결시 테이블 수정되도록 할순 있음
+sequelize.sync({
+    force:false,
+}).then(()=>{
+    console.log("DB Connect");
+}).catch((err)=>{
+    console.error(err);
 });
 
 app.use(morgan('dev'));
@@ -31,6 +41,7 @@ app.use(session({
         secure:false,
     }
 }));
+
 
 app.use('/', pageRouter);
 
