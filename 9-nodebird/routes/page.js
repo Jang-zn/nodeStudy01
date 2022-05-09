@@ -31,6 +31,9 @@ router.use((req, res, next) => {
     next();
   });
 
+
+
+  //아니 왜 또 되냐..?
 router.get('/profile', (req,res)=>{
     res.render('profile', {title:'내 정보 - NodeBird'});
 });
@@ -41,7 +44,6 @@ router.get('/join',(req, res)=>{
 });
 
 router.get('/', (req, res, next)=>{
-    console.log("here!!!!!!");
     const twits = [];
     res.render('main',{
         title:'NodeBird',
