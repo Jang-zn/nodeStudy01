@@ -1,13 +1,14 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-// const {isLoggedIn, inNotLoggedIn} = require('./middlwares');
+const {isLoggedIn, inNotLoggedIn} = require('./middlwares');
 const User = require('../models/user');
 
 const router = express.Router();
 
 //가입신청
-router.post('/join', async (req, res, next)=>{
+// isNotLoggedIn 미들웨어를 호출해서 true여야 진행되도록 함
+router.post('/join', isNotLoggedIn,async (req, res, next)=>{
     //request body에 담겨져 온 가입 form 정보 확인
     const {email, nick, password} = req.body;
 
@@ -33,7 +34,7 @@ router.post('/join', async (req, res, next)=>{
 });
 
 //로그인
-router.post('/login', (req, res, next)=>{
+router.post('/login', isNotLoggedIn,(req, res, next)=>{
     //localStrategy를 찾음...index에서 등록해놓은 local을 찾는것
     passport.authenticate('local', (authError, user, info)=>{ //Strategy의 (error, User/false, message)에 대응되는 매개변수
         if(authError){
