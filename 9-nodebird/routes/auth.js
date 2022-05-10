@@ -67,8 +67,10 @@ router.get('/logout', isLoggedIn, (req, res)=>{
 });
 
 
-//카카오 로그인
+//실제.. 카카오 로그인
 router.get('/kakao', passport.authenticate('kakao'));
+
+//카카오 로그인을 실제로 하게되면 해당 정보를 카카오 api에서 요청을 쏴주는 url 
 router.get('/kakao/callback', passport.authenticate('kakao',{
     failureRedirect : '/',
 }),(req, res)=>{
