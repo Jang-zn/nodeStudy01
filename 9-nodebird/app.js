@@ -10,6 +10,12 @@ dotenv.config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
 const {sequelize} = require('./models');
+
+//passport 인증관련 폴더 설정
+const passportConfig = require('./passport');
+
+
+
 const app = express();
 app.set('port', process.env.PORT || 3001);
 app.set('view engine', 'html');
@@ -26,6 +32,8 @@ sequelize.sync({ force: false })
   .catch((err) => {
     console.error(err);
   });
+  //↓ 이거 해줘야 passport 사용 가능
+  passportConfig();
 
 
 app.use(morgan('dev'));
