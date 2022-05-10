@@ -43,6 +43,7 @@ router.post('/login', (req, res, next)=>{
         if(!user){
             return res.redirect(`/?loginError=${info.message}`);
         }
+        //req.login 하는순간 passport index의 passport.serializeUser 실행됨
         return req.login(user, (loginError)=>{
             if(loginError){
                 console.error(loginError);
@@ -53,3 +54,16 @@ router.post('/login', (req, res, next)=>{
         //미들웨어 확장패턴의 내부 미들웨어에는 (req, res, next)를 끝에 붙여준다.
     })(req, res, next);
 });
+
+//로그아웃
+router.get('/logout', isLoggedIn, (req, res)=>{
+    //생성되었던 세션쿠키 삭제
+    req.logOut();
+    //세션정보 삭제
+    req.session.destroy();
+    //홈으로 보냄
+    res.redirect('/');
+});
+
+
+module.exports=router;
