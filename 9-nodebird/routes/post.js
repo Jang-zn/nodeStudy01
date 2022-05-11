@@ -38,6 +38,21 @@ router.post('/img', isLoggedIn, upload.single('img'), (req, res)=>{
     });
 });
 
+router.post('/', isLoggedIn, upload.none(),async (req, res, next)=>{
+    try{
+        const post = await Post.create({
+            content : req.body.content,
+            img:req.body.url,
+            UserId:req.user.id,
+        });
+        res.redirect('/');
+    }catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+
+
 // const upload2 = multer();
 // router.post('/', isLoggedIn, (req, res, next)=>{
 //     try{
@@ -63,3 +78,5 @@ router.post('/img', isLoggedIn, upload.single('img'), (req, res)=>{
         
 //     }
 // });
+
+module.exports = router;

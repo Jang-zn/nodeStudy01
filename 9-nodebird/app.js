@@ -9,7 +9,7 @@ const passport = require('passport');
 dotenv.config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
-const postRouter = require('./routes/post');
+const postsRouter = require('./routes/post');
 const {sequelize} = require('./models');
 
 //passport 인증관련 폴더 설정
@@ -39,6 +39,7 @@ sequelize.sync({ force: false })
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -61,7 +62,7 @@ app.use(passport.session());
 
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
-app.use('/post', postRouter);
+app.use('/post', postsRouter);
 
 
 app.use((req,res,next)=>{
