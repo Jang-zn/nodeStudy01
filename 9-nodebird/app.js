@@ -10,6 +10,7 @@ dotenv.config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
 const postsRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const {sequelize} = require('./models');
 
 //passport 인증관련 폴더 설정
@@ -63,6 +64,7 @@ app.use(passport.session());
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
 app.use('/post', postsRouter);
+app.use('/user', userRouter);
 
 
 app.use((req,res,next)=>{
