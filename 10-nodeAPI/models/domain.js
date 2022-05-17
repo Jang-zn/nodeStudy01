@@ -17,6 +17,7 @@ module.exports = class Domain extends Sequelize.Model{
 
             //API 키 역할
             clientSecret:{
+                //type : Sequelize.UUID 로 해도 된다. UUIDV4같은 경우는 mySql에서는 지원 안됨
                 type : Sequelize.STRING(36),
                 allowNull:false,
             }
