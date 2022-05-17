@@ -3,7 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const morgan = require('morgan');
-const session = require('session');
+const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 
@@ -12,7 +12,6 @@ const authRouter = require('./routes/auth');
 const indexRouter = require('./routes');
 const {sequelize} = require('./models');
 const passportConfig = require('./passport');
-const { AmplifyPrePushEventData } = require('@aws-amplify/cli/lib/domain/amplify-event');
 
 const app = express();
 passportConfig();

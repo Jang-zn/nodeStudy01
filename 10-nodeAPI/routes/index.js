@@ -1,4 +1,5 @@
 const express = require('express');
+//uuid로 api 키 발급해주는것
 const { v4 : uuidv4}= require('uuid');
 const {User, Domain} = require('../models');
 const {isLoggedIn} = require('./middlewares');
