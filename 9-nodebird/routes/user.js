@@ -19,3 +19,5 @@ router.post('/:id/follow', isLoggedIn, async (req, res, next)=>{
         next(e);
     }
 });
+
+module.exports=router;
