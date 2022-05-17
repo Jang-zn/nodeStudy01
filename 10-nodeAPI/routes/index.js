@@ -20,7 +20,7 @@ router.get('/', async (req, res, next)=>{
 });
 
 
-router.post('/domain', inLoggedIn, async (req, res, next)=>{
+router.post('/domain', isLoggedIn, async (req, res, next)=>{
     try{
         await Domain.create({
             UserId:req.user.id,
@@ -34,10 +34,5 @@ router.post('/domain', inLoggedIn, async (req, res, next)=>{
         next(e);
     }
 })
-
-
-
-
-
 
 module.exports=router;
