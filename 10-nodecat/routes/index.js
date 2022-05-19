@@ -3,9 +3,14 @@ const axios = require('axios');
 
 const router = express.Router();
 
+//default 주소,  origin에 값을 넣어줘야 API에서 등록된 도메인으로부터의 요청인지 확인이 가능함
+axios.default.headers.origin = 'http://localhost:4000';
 
-//토큰 테스트
-router.get('/test', async (req, res, next)=>{
+const URL = 'http://localhost:8002/v1';
+
+
+//기존 발급기능 + 토큰 만료시 재발급
+const request = async (req, api)=>{
     try{
         if(!req.session.jwt){ //토큰이 없는경우 발급 시도 (api서버)
             const tokenResult = await axios.post('http://localhost:8002/v1/token',{
@@ -31,6 +36,12 @@ router.get('/test', async (req, res, next)=>{
         }
         return next(e);
     }
+};
+
+
+//토큰 테스트
+router.get('/test', async (req, res, next)=>{
+    
 });
 
 
