@@ -18,10 +18,10 @@ const request = async (req, api)=>{
                 clientSecret : process.env.CLIENT_SECRET,
             });
                 req.session.jwt = tokenResult.data.token; //세션에 토큰정보 저장
-                return await axios.get(`${URL}${api}`, {
-                    headers:{authorization : req.session.jwt}
-                });
         }
+        return await axios.get(`${URL}${api}`, {
+            headers:{authorization : req.session.jwt}
+        });
     }catch(e){
         console.error(e);
         if(e.response.status===419){ //토큰 만료인 경우

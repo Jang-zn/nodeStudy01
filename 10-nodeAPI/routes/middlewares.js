@@ -21,7 +21,9 @@ exports.isNotLoggedIn = (req, res, next)=>{
 exports.verifyToken = (req, res, next)=>{
     try{
         //보통 header의 authorization에 인증을 위한 키같은걸 추가함
-        req.decoded = jwt.verify(req.headers.authorization, process.env,JWT_SECRET);
+        //req에 decode 된 data가 담기게 됨.
+        console.log(req.headers.authorization)
+        req.decoded = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
         return next();
     }catch(e){
         if(e.name==='TokenExpiredError'){

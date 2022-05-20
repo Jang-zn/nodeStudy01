@@ -57,9 +57,8 @@ router.post('/', isLoggedIn, upload.none(),async (req, res, next)=>{
                     });
                 })
             );
+            await post.addHahtags(result.map(r=>r[0]) );
         }
-        
-        await post.addHahtags(result.map(r=>r[0]) );
         res.redirect('/');
     }catch(e){
         console.error(e);
