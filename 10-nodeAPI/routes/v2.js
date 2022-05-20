@@ -1,13 +1,12 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const {verifyToken, deprecated} = require('../routes/middlewares');
+const {verifyToken, apiLimiter} = require('./middlewares');
 const {Domain, User, Post, Hashtag} = require('../models');
 
 const router = express.Router();
-//모든 라우터에 공통으로 적용할거면 이렇게 .use 처리해준다.
-router.use(deprecated);
-
+router.use(apiLimiter);
+//
 
 //토큰 발급용 라우터
 router.post('/token', async (req, res)=>{

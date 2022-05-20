@@ -7,7 +7,7 @@ const router = express.Router();
 //default 주소,  origin에 값을 넣어줘야 API에서 등록된 도메인으로부터의 요청인지 확인이 가능함
 axios.defaults.headers.origin='http://localhost:4000';
 
-const URL = 'http://localhost:8002/v1';
+const URL = 'http://localhost:8002/v2';
 
 
 //기존 발급기능 + 토큰 만료시 재발급
