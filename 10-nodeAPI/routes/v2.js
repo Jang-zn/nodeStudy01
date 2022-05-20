@@ -1,12 +1,36 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
+const url = require('url');
+
 
 const {verifyToken, apiLimiter} = require('./middlewares');
 const {Domain, User, Post, Hashtag} = require('../models');
+const { urlencoded } = require('express');
 
 const router = express.Router();
 router.use(apiLimiter);
-//
+
+//미들웨어 확장패턴으로 cors 적용
+//이 경우 validation 분기처리 등을 하기 수월해짐
+router.use(async (req, res, next)=>{
+    const domain = await Domain.findOne({
+        where:{
+            //optional chaining ?. 연산자 → 객체 있으면 .으로 접근하고 없으면 undefined 처리
+            //dart의 ?.하고 같은거라고 보면 됨
+            host:urlencoded.pars(req.get('origin'))?.host
+        }
+    });
+    if(domain){
+        cors({
+            origin:true,
+            credentials:true,
+        })(req, res, next);        
+    }else{
+        next();
+    }
+});
+
 
 //토큰 발급용 라우터
 router.post('/token', async (req, res)=>{
@@ -38,6 +62,16 @@ router.post('/token', async (req, res)=>{
             //토큰 발급자 정보
             issuer:'nodebird'
         });
+
+        // //CORS 해결을 위해 헤더에 추가
+        // // * 넣으면 모든 url에 대해 요청을 허가한다는 의미
+        // // 아니면 도메인값 넣어줘도 됨
+        // res.setHeader('Access-Control-Allow-Origin', '*');
+        // //쿠키를 주고받기 위해 허용해줘야 함
+        // res.setHeader('Access-Control-Allow-Credentials', 'true');
+        //→ 근데 이러면 귀찮으니 cors 패키지를 사용한다.
+
+
         return res.json({
             code:200,
             message:'토큰이 발급되었습니다.',

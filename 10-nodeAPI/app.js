@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
+// const cors = require('cors');
 
 dotenv.config();
 const authRouter = require('./routes/auth');
@@ -47,6 +48,15 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// //이러면 전체 라우터에 cors가 적용되는데, 원하는 라우터에만 미들웨어처럼 넣어줘도 된다.
+// //라우터 단위로 걸어주는것을 권장함 
+
+// app.use(cors({
+//     //credential 같은 옵션 넣으면 origin:'*' 못씀. 공식문서 확인    
+// }));
+
+
 app.use('/v1', v1Router);
 app.use('/v2', v2Router);
 app.use('/auth', authRouter);

@@ -53,5 +53,10 @@ router.get('/search/:hashtag', async (req, res, next)=>{
     }
 });
 
+//예제라서 프론트로 키 보내주는건데, 실무에서 이러면 자살행위라고 한다.
+router.get('/', (req, res)=>{
+    res.render('main', {key:process.env.CLIENT_SECRET});
+})
+
 
 module.exports=router;
