@@ -48,7 +48,7 @@ router.post('/', isLoggedIn, upload.none(),async (req, res, next)=>{
 
         //정규표현식으로 해시태그 골라내기
         //아래처럼 하면 {{해시태그, false}, {해시태그, true}} 형태로 있으면 false, 없으면 true 주는 2차원배열 형태로 나옴
-        const hashtags = req.body.content.match(/#[^\s#]*g/);
+        const hashtags = req.body.content.match(/#[^\s#]*/g);
         if(hashtags){
             const result = await Promise.all(
                 hashtags.map(tag=>{
@@ -57,7 +57,7 @@ router.post('/', isLoggedIn, upload.none(),async (req, res, next)=>{
                     });
                 })
             );
-            await post.addHahtags(result.map(r=>r[0]) );
+            await post.addHashtags(result.map(r=>r[0]) );
         }
         res.redirect('/');
     }catch(e){
