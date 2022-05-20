@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const {verifyToken} = require('../routes/middlewares');
 const {Domain, User, Post, Hashtag} = require('..//models');
-const { INET } = require('sequelize/types');
 
 const router = express.Router();
 
@@ -54,12 +53,13 @@ router.post('/token', async (req, res)=>{
 
 //토큰 테스트
 router.get('/test', verifyToken, (req, res)=>{
-    res.json(req.decoded); 
+    return res.json(req.decoded); 
 });
 
 
 //자신의 포스팅 가져오는 라우트
 router.get('/posts/my', verifyToken, (req, res)=>{
+    console.log(`userId : ${req.decoded.id}`);
     Post.findAll({where:{userId:req.decoded.id}}).then((posts)=>{
         res.json({
             code:200,
