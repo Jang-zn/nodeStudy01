@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app"
+    "start":"cross-env NODE_ENV=production PORT=80 pm2 start server.js",
+    "dev": "nodemon server",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "author": "jang",
   "license": "MIT",
