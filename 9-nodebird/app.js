@@ -39,9 +39,10 @@ if(process.env.NODE_ENV==='production'){
   app.use(morgan('combined'));
   //세션에서 proxy true인 경우 추가
   app.enable('trust proxy');
-  //
-  app.use(helmet());
-  //
+
+  //서버 요청에 관련된 보안을 도와주는 미들웨어 2종 helmet, hpp
+  //contentSecurityPolicy는 true가 default인데, 외부 css같은거 불러오다가 에러날 수 있음
+  app.use(helmet({contentSecurityPolicy:false}));
   app.use(hpp());
 }else{
   app.use(morgan('dev'));
