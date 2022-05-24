@@ -7,7 +7,18 @@ const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 const passport = require('passport');
 const logger = require('./logger');
+const redis = require('redis');
+const RedisStore = require('connect-redis')(session);
+
+
+
 dotenv.config();
+const redisClient = redis.createClient({
+  url:`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password : process.env.REDIS.PASSWORD,
+})
+
+
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
 const postsRouter = require('./routes/post');
@@ -64,7 +75,9 @@ const sessionOption = {
   cookie : {
       httpOnly:true,
       secure:false,
-  }
+  },
+  //Redis db를 적용해줘서 클러스터간에도 메모리 공유되도록 설정함.
+  store:new RedisStore({client:redisClient}),
 }
 if(process.env.NODE_ENV === 'production'){
   //노드 앞에 별개 서버가 있는경우에만 proxy=true 실무에선 nginx같은거 있어서 true 해놓으면 좋음
