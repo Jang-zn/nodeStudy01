@@ -6,6 +6,7 @@ const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const logger = require('./logger');
 dotenv.config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
@@ -15,6 +16,7 @@ const {sequelize} = require('./models');
 
 //passport 인증관련 폴더 설정
 const passportConfig = require('./passport');
+const logger = require('./logger');
 const app = express();
 app.set('port', process.env.PORT || 3001);
 app.set('view engine', 'html');
@@ -87,6 +89,8 @@ app.use('/user', userRouter);
 
 app.use((req,res,next)=>{
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+    //console.log나 console.error 이런거에서 console만 logger로 바꿔주면 된다.
+    logger.error(error.message);
     error.status = 404;
     next(error);
 });
